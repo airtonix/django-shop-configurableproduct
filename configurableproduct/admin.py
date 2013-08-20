@@ -9,79 +9,94 @@ from django.conf import settings
 from sorl.thumbnail.admin.current import AdminImageWidget
 from sorl.thumbnail.fields import ImageField
 
-from models.product import CProduct, ProductType
-from models.fields.char_field import TypeChar, ProductCharField, ProductChar
-from models.fields.boolean_field import TypeBoolean, ProductBooleanField, ProductBoolean
-from models.fields.float_field import TypeFloat, ProductFloatField, ProductFloat
-from models.fields.image_field import TypeImage, ProductImageField, ProductImage
+from .models.product import CProduct, ProductType
+from .models.fields import char_field, boolean_field, float_field, image_field, file_field
 
 
-class ProductCharInline(admin.TabularInline):
-    model = ProductChar
-    extra = 0
-    can_delete = True
-    fieldsets = [
-            ['', {'fields': ['field', 'value', 'order']}]
-    ]
-
-
-class ProductBooleanInline(ProductCharInline):
-    model = ProductBoolean
-
-
-class ProductFloatInline(ProductCharInline):
-    model = ProductFloat
-
-
-class ProductImageInline(ProductCharInline):
-    model = ProductImage
-    formfield_overrides = {
-        ImageField: {'widget': AdminImageWidget}
-    }
-
-
-class CProductAdmin(admin.ModelAdmin):
-    fieldsets = (
-    ('', {'fields': ['type', 'unit_price', 'name', 'slug', 'active']}),
-    )
-    inlines = [ProductCharInline, ProductBooleanInline, ProductFloatInline, ProductImageInline]
-    prepopulated_fields = {'slug': ['name']}
-
-admin.site.register(ProductCharField)
-admin.site.register(ProductBooleanField)
-admin.site.register(ProductFloatField)
-admin.site.register(ProductImageField)
-
-
-class TypeBooleanAdmin(admin.TabularInline):
-    model = TypeBoolean
+class AbstractTypeAdmin(admin.TabularInline):
     extra = 0
     can_delete = True
     fieldsets = [
         ['', {'fields': ['field', 'order']}]
     ]
 
-class TypeCharAdmin(TypeBooleanAdmin):
-    model = TypeChar
 
-class TypeFloatAdmin(TypeBooleanAdmin):
-    model = TypeFloat
+class AbstractFieldInline(admin.TabularInline):
+    extra = 0
+    can_delete = True
+    fieldsets = [
+        ['', {'fields': ['field', 'value', 'order']}]
+    ]
 
-class TypeImageAdmin(TypeBooleanAdmin):
+
+class ProductCharInline(AbstractFieldInline):
+    model = char_field.ProductChar
+
+
+class ProductBooleanInline(AbstractFieldInline):
+    model = boolean_field.ProductBoolean
+
+
+class ProductFloatInline(AbstractFieldInline):
+    model = float_field.ProductFloat
+
+
+class ProductImageInline(AbstractFieldInline):
+    model = image_field.ProductImage
+    formfield_overrides = {
+        ImageField: {'widget': AdminImageWidget}
+    }
+
+
+class ProductFileInline(AbstractFieldInline):
+    model = file_field.ProductFile
+
+
+class TypeCharAdmin(AbstractTypeAdmin):
+    model = char_field.TypeChar
+
+
+class TypeBooleanAdmin(AbstractTypeAdmin):
+    model = boolean_field.TypeBoolean
+
+
+class TypeFloatAdmin(AbstractTypeAdmin):
+    model = float_field.TypeFloat
+
+
+class TypeImageAdmin(AbstractTypeAdmin):
     model = TypeImage
+
+
+class TypeFileAdmin(AbstractTypeAdmin):
+    model = TypeFile
+
 
 class ProductTypeAdmin(admin.ModelAdmin):
     fieldsets = (
-    ('', {'fields': ['name']}),
+        ('', {'fields': ['name']}),
     )
     list_per_page = 100
     list_display = ('name',)
     search_fields = ('name',)
-    inlines = [TypeCharAdmin, TypeBooleanAdmin, TypeFloatAdmin, TypeImageAdmin]
+    inlines = [TypeCharAdmin, TypeBooleanAdmin,
+               TypeFloatAdmin, TypeImageAdmin, TypeFileAdmin]
 
 
+class CProductAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('', {'fields': ['type', 'unit_price', 'name', 'slug', 'active']}),
+    )
+    inlines = [ProductCharInline, ProductBooleanInline,
+               ProductFloatInline, ProductImageInline, ProductFileInline]
+    prepopulated_fields = {'slug': ['name']}
+
+
+admin.site.register(char_field.ProductCharField)
+admin.site.register(boolean_field.ProductBooleanField)
+admin.site.register(float_field.ProductFloatField)
+admin.site.register(image_field.ProductImageField)
+admin.site.register(file_field.ProductFileField)
 admin.site.register(ProductType, ProductTypeAdmin)
-
-
 if getattr(settings, 'ENABLE_CPRODUCT_ADMIN', False):
     admin.site.register(CProduct, CProductAdmin)
