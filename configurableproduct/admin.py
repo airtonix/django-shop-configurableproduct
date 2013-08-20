@@ -4,16 +4,16 @@
 __author__ = 'zeus'
 
 from django.contrib import admin
-from models import CProduct
-from models import ProductType
-from models import ProductCharField, ProductChar
-from models import ProductBooleanField, ProductBoolean
-from models import ProductFloatField, ProductFloat
-from models import ProductImageField, ProductImage
-from models import TypeImage, TypeBoolean, TypeChar, TypeFloat
+from django.conf import settings
+
 from sorl.thumbnail.admin.current import AdminImageWidget
 from sorl.thumbnail.fields import ImageField
-from django.conf import settings
+
+from models.product import CProduct, ProductType
+from models.fields.char_field import TypeChar, ProductCharField, ProductChar
+from models.fields.boolean_field import TypeBoolean, ProductBooleanField, ProductBoolean
+from models.fields.float_field import TypeFloat, ProductFloatField, ProductFloat
+from models.fields.image_field import TypeImage, ProductImageField, ProductImage
 
 
 class ProductCharInline(admin.TabularInline):
