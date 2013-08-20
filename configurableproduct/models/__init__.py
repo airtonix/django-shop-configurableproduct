@@ -3,9 +3,14 @@
 
 __author__ = 'zeus'
 
-from fields import *
-from producttypes import ProductType
-from product import CProduct
+from .fields import (
+    abstract,
+    boolean_field,
+    char_field,
+    file_field,
+    image_field)
+from .producttypes import ProductType
+from .product import CProduct
 
 
 
