@@ -7,6 +7,7 @@ from django.db import models
 from shop.models.defaults.product import Product
 from django.utils.translation import ugettext_lazy as _
 from fields.image_field import ProductImage
+from fields.file_field import ProductFile
 
 
 class CProduct(Product):
@@ -23,12 +24,14 @@ class CProduct(Product):
     float_fields = models.ManyToManyField('ProductFloatField', through='ProductFloat')
     boolean_fields = models.ManyToManyField('ProductBooleanField', through='ProductBoolean')
     image_fields = models.ManyToManyField('ProductImageField', through=ProductImage)
+    file_fields = models.ManyToManyField('ProductFileField', through=ProductFile)
 
     product_fields = [
             ('char_fields', 'typechar_set'),
             ('float_fields', 'typefloat_set'),
             ('boolean_fields', 'typeboolean_set'),
             ('image_fields', 'typeimage_set')
+            ('file_fields', 'typefile_set')
     ]
 
     def save(self, *args, **kwargs):
@@ -47,6 +50,7 @@ class CProduct(Product):
         fields = list(self.productchar_set.all()) +\
                  list(self.productfloat_set.all()) +\
                  list(self.productboolean_set.all()) +\
+                 list(self.productfile_set.all()) +\
                  list(self.productimage_set.all())
         fields.sort(key=lambda f: f.order)
         return fields
