@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # ---- Field models ---
 class ProductAbstractField(models.Model):
+
     class Meta(object):
         abstract = True
         app_label = 'configurableproduct'
@@ -20,6 +21,7 @@ class ProductAbstractField(models.Model):
 
 
 class BasicThroughField(models.Model):
+
     class Meta(object):
         abstract = True
 
@@ -27,6 +29,7 @@ class BasicThroughField(models.Model):
 
 
 class ProductAbstractFieldThrough(BasicThroughField):
+
     class Meta(object):
         abstract = True
         ordering = ['order']
@@ -35,8 +38,8 @@ class ProductAbstractFieldThrough(BasicThroughField):
     product = models.ForeignKey('configurableproduct.CProduct')
 
 
+class TypeAbstractFieldThrough(BasicThroughField):
 
-class TypeAbstractFieldTrhough(BasicThroughField):
     class Meta(object):
         abstract = True
         ordering = ['order']

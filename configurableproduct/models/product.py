@@ -23,8 +23,8 @@ class CProduct(Product):
     char_fields = models.ManyToManyField('ProductCharField', through='ProductChar')
     float_fields = models.ManyToManyField('ProductFloatField', through='ProductFloat')
     boolean_fields = models.ManyToManyField('ProductBooleanField', through='ProductBoolean')
-    image_fields = models.ManyToManyField('ProductImageField', through=ProductImage)
-    file_fields = models.ManyToManyField('ProductFileField', through=ProductFile)
+    image_fields = models.ManyToManyField('ProductImageField', through='ProductImage')
+    file_fields = models.ManyToManyField('ProductFileField', through='ProductFile')
 
     product_fields = [
             ('char_fields', 'typechar_set'),
