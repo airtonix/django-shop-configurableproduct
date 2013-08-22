@@ -1,10 +1,21 @@
-from django.test import TestCase
-from models import CProduct
-from models import ProductType
-from models import ProductCharField, ProductChar
-from models import TypeChar
+#!/usr/bin/env python
+# vim:fileencoding=utf-8
 
-#TODO Tests for other fields
+__author__ = 'zeus'
+__contributers__ = [
+    'Zenobius Jiricek <airtonix@gmail.com>',
+]
+
+from django.test import TestCase
+
+
+CProduct = get_model('configurableproduct', 'CProduct')
+ProductType = get_model('configurableproduct', 'ProductType')
+
+ProductCharField = get_model('configurableproduct', 'ProductCharField')
+ProductChar = get_model('configurableproduct', 'ProductChar')
+TypeChar = get_model('configurableproduct', 'TypeChar')
+
 
 class SimpleTest(TestCase):
 
@@ -13,7 +24,9 @@ class SimpleTest(TestCase):
         self.pcf.save()
         self.product_type = ProductType(name='test type')
         self.product_type.save()
-        TypeChar.objects.create(field=self.pcf, type=self.product_type, order=2)
+        TypeChar.objects.create(field=self.pcf,
+                                type=self.product_type,
+                                order=2)
 
     def test_product_type(self):
         """
@@ -23,6 +36,3 @@ class SimpleTest(TestCase):
         product.save()
         self.assertEqual(product.productchar_set.all()[0].field, self.pcf)
         self.assertEqual(product.productchar_set.all()[0].order, 2)
-
-
-

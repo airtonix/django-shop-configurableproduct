@@ -2,6 +2,9 @@
 # vim:fileencoding=utf-8
 
 __author__ = 'zeus'
+__contributers__ = [
+    'Zenobius Jiricek <airtonix@gmail.com>',
+]
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _

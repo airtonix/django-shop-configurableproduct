@@ -2,6 +2,9 @@
 # vim:fileencoding=utf-8
 
 __author__ = 'zeus'
+__contributers__ = [
+    'Zenobius Jiricek <airtonix@gmail.com>',
+]
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -24,8 +27,7 @@ class ProductBoolean(abstract.ProductAbstractFieldThrough):
         verbose_name_plural = _('Boolean fields')
         app_label = 'configurableproduct'
 
-    value = models.NullBooleanField(
-        verbose_name=_('Value'), default=None, null=True, blank=True)
+    value = models.NullBooleanField(verbose_name=_('Value'), default=None, null=True, blank=True)
     field = models.ForeignKey('ProductBooleanField', verbose_name=_('Field'))
 
 

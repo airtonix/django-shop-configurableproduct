@@ -2,15 +2,11 @@
 # vim:fileencoding=utf-8
 
 __author__ = 'zeus'
+__contributers = [
+    'Zenobius Jiricek <airtonix@gmail.com>'
+]
 
-from .fields import (
-    abstract,
-    boolean_field,
-    char_field,
-    file_field,
-    image_field)
-from .producttypes import ProductType
-from .product import CProduct
-
-
+from .fields import *
+from .productmodel import *
+from .producttypemodel import *
 

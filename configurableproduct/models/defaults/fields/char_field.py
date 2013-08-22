@@ -2,6 +2,9 @@
 # vim:fileencoding=utf-8
 
 __author__ = 'zeus'
+__contributers__ = [
+    'Zenobius Jiricek <airtonix@gmail.com>',
+]
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -24,8 +27,8 @@ class ProductChar(abstract.ProductAbstractFieldThrough):
         verbose_name_plural = _('Char fields')
         app_label = 'configurableproduct'
 
-    value = models.CharField(max_length=200, verbose_name=_(
-        'Value'), default=None, null=True, blank=True)
+    value = models.CharField(max_length=200,
+        verbose_name=_('Value'), default=None, null=True, blank=True)
     field = models.ForeignKey('ProductCharField', verbose_name=_('Field'))
 
 

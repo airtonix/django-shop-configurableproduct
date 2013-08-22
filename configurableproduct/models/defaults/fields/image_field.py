@@ -2,6 +2,9 @@
 # vim:fileencoding=utf-8
 
 __author__ = 'zeus'
+__contributers__ = [
+    'Zenobius Jiricek <airtonix@gmail.com>',
+]
 
 import uuid
 import os
@@ -16,10 +19,7 @@ from sorl.thumbnail.helpers import ThumbnailError
 from . import abstract
 
 
-def get_file_path(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join(getattr(settings, 'PRODUCT_IMAGE_UPLOAD_TO', os.path.join('products','image')), filename)
+UPLOAD_PATH = getattr(settings, 'PRODUCT_IMAGE_UPLOAD_TO', "products/{product_id}/images/{file_uuid}.{file_ext}")
 
 
 class ProductImageField(abstract.ProductAbstractField):
@@ -30,6 +30,12 @@ class ProductImageField(abstract.ProductAbstractField):
         app_label = 'configurableproduct'
 
 
+class ProductImageManager(models.Manager):
+
+    def primary(self):
+        return self.get_queryset().filter(is_primary=True)
+
+
 class ProductImage(abstract.ProductAbstractFieldThrough):
 
     class Meta(abstract.ProductAbstractFieldThrough.Meta):
@@ -37,10 +43,16 @@ class ProductImage(abstract.ProductAbstractFieldThrough):
         verbose_name_plural = _('Product image field')
         app_label = 'configurableproduct'
 
-    description = models.CharField(
-        max_length=200, verbose_name=_('Description'), blank=True, null=True)
-    value = ImageField(verbose_name=_('File'), upload_to=get_file_path)
-    field = models.ForeignKey('ProductImageField', verbose_name=_('Field'))
+    def get_file_path(instance, filename):
+        filename, file_ext = filename.splitext()
+        file_uuid = uuid.uuid4()
+        kwargs = {
+            "product_id": instance.product.id,
+            "file_uuid": file_uuid,
+            "file_ext": file_ext,
+            "filename": filename,
+        }
+        return UPLOAD_PATH.format(**kwargs)
 
     def admin_thumbnail(self):
         try:
@@ -52,6 +64,14 @@ class ProductImage(abstract.ProductAbstractFieldThrough):
 
     admin_thumbnail.short_description = _('Thumbnail')
     admin_thumbnail.allow_tags = True
+
+    description = models.CharField(
+        max_length=200, verbose_name=_('Description'), blank=True, null=True)
+    value = ImageField(verbose_name=_('File'), upload_to=get_file_path)
+    field = models.ForeignKey('ProductImageField', verbose_name=_('Field'))
+    is_primary = models.BooleanField(default=False)
+
+    objects = ProductImageManager()
 
 
 class TypeImage(abstract.TypeAbstractFieldThrough):

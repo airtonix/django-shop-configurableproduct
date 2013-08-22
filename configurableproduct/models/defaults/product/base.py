@@ -2,35 +2,35 @@
 # vim:fileencoding=utf-8
 
 __author__ = 'zeus'
+__contributers__ = [
+    'Zenobius Jiricek <airtonix@gmail.com>',
+]
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import get_model
 
-from shop.models.defaults.product import Product
+# from shop.models.defaults.bases import BaseProduct
 
 
-class CProduct(Product):
+# Product = get_model('shop', 'Product')
+# ProductType = get_model('configurableproduct', 'ProductType')
+
+
+class ConfigurableProductBase(models.Model):
 
     """
     A configurable product class, has m2m relations to text, float and boolean fields
     """
     class Meta(object):
-        verbose_name = _('Product')
-        verbose_name_plural = _('Products')
-        app_label = 'configurableproduct'
+        abstract = True
 
-    type = models.ForeignKey(
-        'ProductType', related_name="products", verbose_name=_('Type'), null=False, blank=False)
-    char_fields = models.ManyToManyField(
-        'ProductCharField', through='ProductChar')
-    float_fields = models.ManyToManyField(
-        'ProductFloatField', through='ProductFloat')
-    boolean_fields = models.ManyToManyField(
-        'ProductBooleanField', through='ProductBoolean')
-    image_fields = models.ManyToManyField(
-        'ProductImageField', through='ProductImage')
-    file_fields = models.ManyToManyField(
-        'ProductFileField', through='ProductFile')
+    type = models.ForeignKey('ProductType', related_name="products", verbose_name=_('Type'), null=False, blank=False)
+    char_fields = models.ManyToManyField('ProductCharField', through='ProductChar')
+    float_fields = models.ManyToManyField('ProductFloatField', through='ProductFloat')
+    boolean_fields = models.ManyToManyField('ProductBooleanField', through='ProductBoolean')
+    image_fields = models.ManyToManyField('ProductImageField', through='ProductImage')
+    file_fields = models.ManyToManyField('ProductFileField', through='ProductFile')
 
     product_fields = [
         ('char_fields', 'typechar_set'),
@@ -55,9 +55,10 @@ class CProduct(Product):
     @property
     def field_list(self):
         fields = list(self.productchar_set.all()) +\
-            list(self.productfloat_set.all()) +\
-            list(self.productboolean_set.all()) +\
-            list(self.productfile_set.all()) +\
-            list(self.productimage_set.all())
+                 list(self.productfloat_set.all()) +\
+                 list(self.productboolean_set.all()) +\
+                 list(self.productfile_set.all()) +\
+                 list(self.productimage_set.all())
         fields.sort(key=lambda f: f.order)
         return fields
+

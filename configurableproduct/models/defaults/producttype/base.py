@@ -2,16 +2,18 @@
 # vim:fileencoding=utf-8
 
 __author__ = 'zeus'
+__contributers__ = [
+    'Zenobius Jiricek <airtonix@gmail.com>',
+]
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class ProductType(models.Model):
+class ConfigurableProductTypeBase(models.Model):
+
     class Meta(object):
-        verbose_name = _('Product type')
-        verbose_name_plural = _('Product types')
-        app_label = 'configurableproduct'
+        abstract = True
 
     name = models.CharField(max_length=200, verbose_name=_('Name'), blank=False, unique=True)
     char_fields = models.ManyToManyField('ProductCharField', verbose_name=_('Char field'), blank=True, null=True, through='TypeChar')
