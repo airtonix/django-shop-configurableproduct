@@ -9,10 +9,11 @@ __contributers__ = [
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from . import abstract
+
+from .abstract import ProductAbstractField, ProductAbstractFieldThrough, TypeAbstractFieldThrough
 
 
-class ProductCharField(abstract.ProductAbstractField):
+class ProductCharField(ProductAbstractField):
 
     class Meta(object):
         verbose_name = _('Product field - char')
@@ -20,9 +21,9 @@ class ProductCharField(abstract.ProductAbstractField):
         app_label = 'configurableproduct'
 
 
-class ProductChar(abstract.ProductAbstractFieldThrough):
+class ProductChar(ProductAbstractFieldThrough):
 
-    class Meta(abstract.ProductAbstractFieldThrough.Meta):
+    class Meta(ProductAbstractFieldThrough.Meta):
         verbose_name = _('Char field')
         verbose_name_plural = _('Char fields')
         app_label = 'configurableproduct'
@@ -32,9 +33,9 @@ class ProductChar(abstract.ProductAbstractFieldThrough):
     field = models.ForeignKey('ProductCharField', verbose_name=_('Field'))
 
 
-class TypeChar(abstract.TypeAbstractFieldThrough):
+class TypeChar(TypeAbstractFieldThrough):
 
-    class Meta(abstract.TypeAbstractFieldThrough.Meta):
+    class Meta(TypeAbstractFieldThrough.Meta):
         verbose_name = _('Char field')
         verbose_name_plural = _('Char fields')
         app_label = 'configurableproduct'
