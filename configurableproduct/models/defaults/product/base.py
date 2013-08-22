@@ -38,7 +38,7 @@ class ConfigurableProductBase(models.Model):
     ]
 
     def save(self, *args, **kwargs):
-        super(CProduct, self).save(*args, **kwargs)
+        super(ConfigurableProductBase, self).save(*args, **kwargs)
         # Create relation for each field in product type
         for field_type in self.product_fields:
             self_field = getattr(self, field_type[0])
