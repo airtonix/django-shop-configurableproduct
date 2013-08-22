@@ -22,11 +22,21 @@ class ProductAbstractField(models.Model):
         return self.name
 
 
+class AbstractThroughManager(models.Manager):
+
+    def get_query_set(self):
+        return super(AbstractThroughManager, self).get_query_set().filter(system=False)
+
+    def system(self):
+        return super(AbstractThroughManager, self).get_query_set().filter(system=True)
+
+
 class BasicThroughField(models.Model):
 
     class Meta(object):
         abstract = True
 
+    objects = AbstractThroughManager()
     order = models.IntegerField(default=0, verbose_name=_('Ordering'))
     system = models.BooleanField(default=False, verbose_name=_('System'),
                                  help_text=_('Hide this field from customers?'))
