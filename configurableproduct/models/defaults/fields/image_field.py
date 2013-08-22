@@ -30,7 +30,7 @@ class ProductImageField(abstract.ProductAbstractField):
         app_label = 'configurableproduct'
 
 
-class ProductImageManager(models.Manager):
+class ProductImageManager(abstract.AbstractThroughManager):
 
     def primary(self):
         return self.get_query_set().get(is_primary=True)
