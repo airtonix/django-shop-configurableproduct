@@ -10,9 +10,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import get_model
 
-# from shop.models.defaults.bases import BaseProduct
-
-
 # Product = get_model('shop', 'Product')
 # ProductType = get_model('configurableproduct', 'ProductType')
 
