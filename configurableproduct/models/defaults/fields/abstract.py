@@ -9,9 +9,6 @@ __contributers__ = [
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ...productmodel import Product
-from ...producttypemodel import ProductType
-
 
 class ProductAbstractField(models.Model):
 
@@ -42,7 +39,7 @@ class ProductAbstractFieldThrough(BasicThroughField):
         ordering = ['order']
         app_label = 'configurableproduct'
 
-    product = models.ForeignKey(Product)
+    product = models.ForeignKey("Product")
 
 
 class TypeAbstractFieldThrough(BasicThroughField):
@@ -52,4 +49,4 @@ class TypeAbstractFieldThrough(BasicThroughField):
         ordering = ['order']
         app_label = 'configurableprodcut'
 
-    type = models.ForeignKey(ProductType)
+    type = models.ForeignKey("ProductType")
