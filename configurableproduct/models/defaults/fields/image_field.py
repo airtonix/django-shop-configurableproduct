@@ -33,7 +33,7 @@ class ProductImageField(abstract.ProductAbstractField):
 class ProductImageManager(models.Manager):
 
     def primary(self):
-        return self.get_queryset().filter(is_primary=True)
+        return self.get_query_set().get(is_primary=True)
 
 
 class ProductImage(abstract.ProductAbstractFieldThrough):
