@@ -16,9 +16,9 @@ from django.utils.crypto import get_random_string
 
 from . import abstract
 
-
+#TODO: change this to a dynamically loaded class that exposes several methods
 LICENSE_KEY_GENERATOR = getattr(settings, "LICENSE_KEY_GENERATOR", lambda instance, order: get_random_string(50, 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'))
-UPLOAD_PATH = getattr(settings, 'PRODUCT_FILE_UPLOAD_TO', "products/{product_id}/files/{file_uuid}.{file_ext}")
+UPLOAD_PATH = getattr(settings, 'PRODUCT_FILE_UPLOAD_TO', "products/{product_id}/files/{file_uuid}{file_ext}")
 
 # noinspection PyUnusedLocal
 
@@ -39,7 +39,7 @@ class ProductFile(abstract.ProductAbstractFieldThrough):
         app_label = 'configurableproduct'
 
     def get_file_path(instance, filename):
-        filename, file_ext = filename.splitext()
+        filename, file_ext = os.path.splitext(filename)
         file_uuid = uuid.uuid4()
         kwargs = {
             "product_id": instance.product.id,

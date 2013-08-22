@@ -19,7 +19,7 @@ from sorl.thumbnail.helpers import ThumbnailError
 from . import abstract
 
 
-UPLOAD_PATH = getattr(settings, 'PRODUCT_IMAGE_UPLOAD_TO', "products/{product_id}/images/{file_uuid}.{file_ext}")
+UPLOAD_PATH = getattr(settings, 'PRODUCT_IMAGE_UPLOAD_TO', "products/{product_id}/images/{file_uuid}{file_ext}")
 
 
 class ProductImageField(abstract.ProductAbstractField):
@@ -44,7 +44,7 @@ class ProductImage(abstract.ProductAbstractFieldThrough):
         app_label = 'configurableproduct'
 
     def get_file_path(instance, filename):
-        filename, file_ext = filename.splitext()
+        filename, file_ext = os.path.splitext(filename)
         file_uuid = uuid.uuid4()
         kwargs = {
             "product_id": instance.product.id,
