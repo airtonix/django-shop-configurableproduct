@@ -35,6 +35,9 @@ class ProductImageManager(abstract.AbstractThroughManager):
     def primary(self):
         return self.get_query_set().get(is_primary=True)
 
+    def secondary(self):
+        return self.get_query_set().filter(is_primary=False)
+
 
 class ProductImage(abstract.ProductAbstractFieldThrough):
 
