@@ -8,10 +8,6 @@ __contributers__ = [
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.db.models import get_model
-
-# Product = get_model('shop', 'Product')
-# ProductType = get_model('configurableproduct', 'ProductType')
 
 
 class ConfigurableProductBase(models.Model):
