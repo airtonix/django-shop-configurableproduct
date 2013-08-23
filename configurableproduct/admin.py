@@ -14,7 +14,7 @@ from sorl.thumbnail.admin.current import AdminImageWidget
 from sorl.thumbnail.fields import ImageField
 
 
-CProduct = get_model('configurableproduct', 'CProduct')
+Product = get_model('configurableproduct', 'CProduct')
 ProductType = get_model('configurableproduct', 'ProductType')
 
 TypeChar = get_model('configurableproduct', 'TypeChar')
@@ -116,7 +116,7 @@ class ProductTypeAdmin(admin.ModelAdmin):
                ]
 
 
-class CProductAdmin(admin.ModelAdmin):
+class ProductAdmin(admin.ModelAdmin):
     fieldsets = (
         ('', {'fields': ['type', 'unit_price', 'name', 'slug', 'active']}),
     )
@@ -136,4 +136,4 @@ admin.site.register(ProductImageField)
 admin.site.register(ProductFileField)
 admin.site.register(ProductType, ProductTypeAdmin)
 if getattr(settings, 'ENABLE_CPRODUCT_ADMIN', False):
-    admin.site.register(CProduct, CProductAdmin)
+    admin.site.register(Product, ProductAdmin)
